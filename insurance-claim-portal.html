@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickClaim E-Claims Management Interface</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .landing-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            text-align: center;
+        }
+        .nav-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .side-nav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+        .side-nav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+        .side-nav a:hover {
+            color: #f1f1f1;
+        }
+        .side-nav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+        .btn-alternative {
+            background-color: #2ecc71;
+        }
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .step.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: none;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .dashboard-card {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .hidden {
+            display: none;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .accordion {
+            background-color: #f8f8f8;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+        }
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+        .nav-icons {
+            display: flex;
+            justify-content: space-around;
+            margin: 1rem 0;
+        }
+        .nav-icon-wrapper {
+            text-align: center;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+        .alert {
+            padding: 10px;
+            background-color: #f44336;
+            color: white;
+            margin-bottom: 15px;
+            display: none;
+        }
+        #loginForm {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="mySidenav" class="side-nav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <a href="#" onclick="showSection('dashboard')">📄</a>
+        <a href="#" onclick="showSection('form')">🔧</a>
+        <a href="#" onclick="showSection('landing')">💾</a>
+        <a href="#" onclick="showSection('landing')">📤</a>
+        <a href="#" onclick="showSection('landing')">📊</a>
+    </div>
+
+    <div class="header">
+        <span class="nav-icon" onclick="openNav()">☰</span>
+        <div class="logo">QuickClaim</div>
+        <div id="userInfo" style="display: none;">User: john.doe@example.com</div>
+    </div>
+
+    <!-- Landing Page -->
+    <div id="landing" class="landing-container">
+        <h1>E-Claims Management Interface</h1>
+        <p>Insurance claim processing simplified using our proprietary algorithmic adjudication methodology.</p>
+        
+        <button class="btn" onclick="showSection('login')">Log your incident</button>
+        <button class="btn btn-alternative" onclick="showSection('login')">Start a claim</button>
+        
+        <div style="margin-top: 3rem;">
+            <button class="accordion">More Information</button>
+            <div class="panel">
+                <p>The E-Claims Management Interface (ECMI) is designed to facilitate expedited processing of insurance claims through digital means. Users may initiate new claims, track existing claims, and interact with the claims adjustment department.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login" class="form-container" style="display: none;">
+        <h2>Authentication Portal</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address <span class="tooltip">ⓘ<span class="tooltiptext">Must be your registered email</span></span></label>
+                <input type="email" id="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password <span class="tooltip">ⓘ<span class="tooltiptext">8+ characters, 1 uppercase, 1 number</span></span></label>
+                <input type="password" id="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn" onclick="login(event)">Login</button>
+        </form>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard-container">
+        <h2>Policyholder E-Claims Portal</h2>
+        
+        <div class="nav-icons">
+            <div class="nav-icon-wrapper tooltip">
+                🔧
+                <span class="tooltiptext">Settings</span>
+            </div>
+            <div class="nav-icon-wrapper tooltip">
+                📄
+                <span class="tooltiptext">Documents</span>
+            </div>
+            <div class="nav-icon-wrapper tooltip">
+                💾
+                <span class="tooltiptext">Save</span>
+            </div>
+            <div class="nav-icon-wrapper tooltip" onclick="showSection('form')">
+                📤
+                <span class="tooltiptext">New Claim</span>
+            </div>
+            <div class="nav-icon-wrapper tooltip">
+                📊
+                <span class="tooltiptext">Reports</span>
+            </div>
+        </div>
+        
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h3>Policy Details</h3>
+                <p>Policy #: POL-2023-45678</p>
+                <p>Coverage Type: Comprehensive</p>
+                <p>Status: Active</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Recent Claims</h3>
+                <p>No recent claims found</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Messages</h3>
+                <p>No unread messages</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Payment History</h3>
+                <p>Last payment: 03/15/2025</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Coverage Limits</h3>
+                <p>Property: $250,000</p>
+                <p>Liability: $500,000</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Documents</h3>
+                <p>Policy Document (PDF)</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Contact Info</h3>
+                <p>Update your contact information</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>Beneficiaries</h3>
+                <p>Manage your beneficiaries</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Claim Form -->
+    <div id="form" class="form-container">
+        <div class="steps-container">
+            <div class="step active">1</div>
+            <div class="step">2</div>
+            <div class="step">3</div>
+            <div class="step">4</div>
+        </div>
+        
+        <h2>Incident Documentation Form</h2>
+        
+        <div id="step1" class="form-step">
+            <div class="form-group">
+                <label for="claimType">Claim Classification <span class="tooltip">ⓘ<span class="tooltiptext">Select the appropriate claim category</span></span></label>
+                <select id="claimType" class="form-control" required>
+                    <option value="">-- Select Claim Type --</option>
+                    <option value="auto">Automotive Collision</option>
+                    <option value="property">Property Damage</option>
+                    <option value="liability">Third-Party Liability</option>
+                    <option value="health">Health-Related Claim</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="incidentDate">Incident Temporal Data <span class="tooltip">ⓘ<span class="tooltiptext">When did the incident occur?</span></span></label>
+                <input type="date" id="incidentDate" class="form-control" required>
+            </div>
+            
+            <button class="btn" onclick="nextStep(1)">Proceed to Next Section</button>
+        </div>
+        
+        <div id="step2" class="form-step hidden">
+            <div class="form-group">
+                <label for="photoUpload">Evidence Documentation <span class="tooltip">ⓘ<span class="tooltiptext">Upload photos of the incident</span></span></label>
+                <input type="file" id="photoUpload" class="form-control" accept="image/*" multiple required>
+            </div>
+            
+            <div class="alert" id="photoAlert">
+                You must upload at least one photo to continue.
+            </div>
+            
+            <button class="btn" onclick="prevStep(2)">Previous</button>
+            <button class="btn" onclick="checkPhotoUpload()">Proceed to Next Section</button>
+        </div>
+        
+        <div id="step3" class="form-step hidden">
+            <div class="form-group">
+                <label for="incidentDetails">Incident Narrative <span class="tooltip">ⓘ<span class="tooltiptext">Describe what happened</span></span></label>
+                <textarea id="incidentDetails" class="form-control" rows="5" required></textarea>
+            </div>
+            
+            <button class="accordion">Advanced Options</button>
+            <div class="panel">
+                <div class="form-group">
+                    <label for="witnesses">Witness Information</label>
+                    <input type="text" id="witnesses" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="policeReport">Police Report Number</label>
+                    <input type="text" id="policeReport" class="form-control">
+                </div>
+            </div>
+            
+            <button class="btn" onclick="prevStep(3)">Previous</button>
+            <button class="btn" onclick="nextStep(3)">Proceed to Final Section</button>
+        </div>
+        
+        <div id="step4" class="form-step hidden">
+            <h3>Claim Submission</h3>
+            <p>Please review your information before submitting.</p>
+            
+            <div class="form-group">
+                <label for="agreement">
+                    <input type="checkbox" id="agreement"> I certify that all information provided is accurate and complete.
+                </label>
+            </div>
+            
+            <button class="btn" style="background-color: #e74c3c;" onclick="cancelClaim()">Cancel Claim</button>
+            <button class="btn" id="submitBtn" style="opacity: 0.5; cursor: not-allowed;" disabled>Submit Claim</button>
+        </div>
+    </div>
+
+    <script>
+        // Show/hide sections
+        function showSection(sectionId) {
+            document.getElementById('landing').style.display = 'none';
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('form').style.display = 'none';
+            
+            document.getElementById(sectionId).style.display = 'block';
+            closeNav();
+        }
+        
+        // Navigation
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+        
+        // Login handling
+        function login(event) {
+            event.preventDefault();
+            document.getElementById('userInfo').style.display = 'block';
+            showSection('dashboard');
+        }
+        
+        // Form steps navigation
+        function nextStep(currentStep) {
+            document.getElementById('step' + currentStep).classList.add('hidden');
+            document.getElementById('step' + (currentStep + 1)).classList.remove('hidden');
+            updateSteps(currentStep + 1);
+        }
+        
+        function prevStep(currentStep) {
+            document.getElementById('step' + currentStep).classList.add('hidden');
+            document.getElementById('step' + (currentStep - 1)).classList.remove('hidden');
+            updateSteps(currentStep - 1);
+        }
+        
+        function updateSteps(activeStep) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                if (index + 1 <= activeStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+        
+        // Check if photos are uploaded
+        function checkPhotoUpload() {
+            const photoInput = document.getElementById('photoUpload');
+            if (photoInput.files.length > 0) {
+                nextStep(2);
+                document.getElementById('photoAlert').style.display = 'none';
+            } else {
+                document.getElementById('photoAlert').style.display = 'block';
+            }
+        }
+        
+        // Enable submit button when agreement is checked
+        document.getElementById('agreement').addEventListener('change', function() {
+            const submitBtn = document.getElementById('submitBtn');
+            if (this.checked) {
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.style.opacity = '0.5';
+                submitBtn.style.cursor = 'not-allowed';
+                submitBtn.disabled = true;
+            }
+        });
+        
+        // Cancel claim function
+        function cancelClaim() {
+            if (confirm("Are you sure you want to cancel your claim? This action cannot be undone.")) {
+                showSection('dashboard');
+                // Reset form
+                document.querySelectorAll('.form-step').forEach(step => {
+                    step.classList.add('hidden');
+                });
+                document.getElementById('step1').classList.remove('hidden');
+                updateSteps(1);
+            }
+        }
+        
+        // Accordion functionality
+        const acc = document.getElementsByClassName("accordion");
+        for (let i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                const panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+        
+        // Submit button handler
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            alert("Your claim has been submitted. A reference number will be sent to your email.");
+            showSection('dashboard');
+            // Reset form
+            document.querySelectorAll('.form-step').forEach(step => {
+                step.classList.add('hidden');
+            });
+            document.getElementById('step1').classList.remove('hidden');
+            updateSteps(1);
+        });
+    </script>
+</body>
+</html>

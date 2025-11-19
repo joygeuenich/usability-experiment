@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Wichtelauslosung 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card-bg: #ffffff;
+      --red: #c4372b;
+      --green: #064428;
+      --gold: #d68b00;
+      --shadow-soft: 0 12px 35px rgba(15, 23, 42, 0.12);
+    }
+
+    * { box-sizing: border-box; margin:0; padding:0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1.5rem;
+      background: #eef5ff;
+      font-family: system-ui, sans-serif;
+      color: var(--green);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ❄️ XXL Schneeflocken in Hellblau */
+    body::before,
+    body::after {
+      content:"";
+      position:fixed;
+      inset:-200px;
+      pointer-events:none;
+
+      background-image:
+        radial-gradient(circle, rgba(204,232,255,0.95) 40px, transparent 40px),
+        radial-gradient(circle, rgba(204,232,255,0.70) 28px, transparent 28px),
+        radial-gradient(circle, rgba(204,232,255,0.45) 18px, transparent 18px);
+
+      background-size: 360px 420px, 480px 520px, 620px 680px;
+      opacity:0.8;
+      animation: snowfall 30s linear infinite;
+      z-index:-3;
+    }
+
+    body::after {
+      animation-duration: 45s;
+      animation-direction: reverse;
+      opacity: 0.6;
+    }
+
+    @keyframes snowfall {
+      from { background-position: 0 -800px; }
+      to   { background-position: 0 1600px; }
+    }
+
+    /* Rudolf im Hintergrund */
+    .rudolf-bg {
+      position: fixed;
+      right: -30px;
+      bottom: -20px;
+      width: 380px;
+      max-width: 52vw;
+      height: auto;
+      background: url("xrudolf-flat.png") no-repeat center/contain;
+      opacity: 0.9;
+      pointer-events: none;
+      z-index: -2;
+      animation: rudolfDance 7s ease-in-out infinite;
+    }
+
+    @keyframes rudolfDance {
+      0%   { transform: translate(0,0) rotate(-2deg) scale(1); }
+      20%  { transform: translate(-12px,-8px) rotate(2deg) scale(1.03); }
+      40%  { transform: translate(6px,-4px) rotate(-1deg) scale(1.02); }
+      60%  { transform: translate(-6px,4px) rotate(2deg) scale(1.04); }
+      80%  { transform: translate(8px,-6px) rotate(-2deg) scale(1.01); }
+      100% { transform: translate(0,0) rotate(-2deg) scale(1); }
+    }
+
+    .app {
+      width:100%;
+      max-width:1000px;
+      background:white;
+      border-radius:28px;
+      padding:2.2rem;
+      box-shadow:var(--shadow-soft);
+      position:relative;
+      z-index:2;
+    }
+
+    header h1 {
+      text-align:center;
+      font-size:3.4rem;
+      letter-spacing:0.12em;
+      color:var(--red);
+      font-weight:800;
+      margin-bottom:1.2rem;
+    }
+
+    .page { display:none; }
+    .page.active { display:block; }
+
+    /* ⭐ Neue Startseite */
+    .start-layout {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 3rem;
+      min-height: 440px;
+    }
+
+    .start-text {
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+
+    .start-text h2 {
+      font-size: 2rem;
+      color: var(--green);
+      font-weight: 800;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+
+    .start-text p {
+      font-size: 1.1rem;
+      color: #083b25;
+    }
+
+    .start-rudolf-big {
+      width: 390px;
+      max-width: 50%;
+      border-radius: 26px;
+      background:white;
+      padding:1.2rem;
+      box-shadow:0 14px 30px rgba(0,0,0,0.18);
+    }
+
+    .start-rudolf-big img {
+      width:100%;
+      height:auto;
+      object-fit:contain;
+    }
+
+    .btn {
+      background: var(--red);
+      color:white;
+      padding: 0.9rem 1.7rem;
+      border-radius: 999px;
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+      margin-top:1rem;
+      font-size:1.05rem;
+      box-shadow:0 6px 18px rgba(196,55,43,0.4);
+      transition:0.2s;
+    }
+
+    .btn:hover {
+      background:#d14738;
+      transform:translateY(-2px);
+    }
+
+    /* Charakterauswahl */
+    .grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px,1fr));
+      gap:1rem;
+      margin-top:1rem;
+    }
+
+    .character-card {
+      background:#f8fafc;
+      border-radius:18px;
+      padding:1rem;
+      text-align:center;
+      cursor:pointer;
+      transition:0.12s;
+      box-shadow:0 4px 10px rgba(15,23,42,0.08);
+    }
+
+    .character-card:hover {
+      transform:translateY(-3px);
+      background:white;
+      box-shadow:0 10px 24px rgba(15,23,42,0.18);
+    }
+
+    .character-card img {
+      width:100%;
+      height:200px;
+      object-fit:contain;
+      background:white;
+      border-radius:14px;
+    }
+
+    .result-wrapper {
+      display:flex;
+      justify-content:center;
+      margin-top:2rem;
+      perspective:1200px;
+    }
+
+    .result-box {
+      width:100%;
+      max-width:420px;
+      background:#f8fafc;
+      border-radius:22px;
+      padding:2rem;
+      text-align:center;
+      box-shadow:0 12px 30px rgba(148,163,184,0.45);
+      transform:rotateY(90deg);
+      opacity:0;
+      transition:0.6s;
+    }
+    .result-box.reveal {
+      transform:rotateY(0);
+      opacity:1;
+    }
+
+    #recipientImage {
+      width:200px;
+      height:200px;
+      object-fit:contain;
+      background:white;
+      border-radius:16px;
+      margin-bottom:1rem;
+    }
+
+    #recipientName {
+      font-size:2rem;
+      font-weight:700;
+      color:var(--green);
+    }
+
+    @media (max-width: 850px) {
+      .start-layout {
+        flex-direction: column-reverse;
+        text-align:center;
+        min-height: auto;
+      }
+      .start-rudolf-big { max-width: 300px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="rudolf-bg"></div>
+
+  <div class="app">
+
+    <header><h1>WICHTELAUSLOSUNG 2025</h1></header>
+
+    <!-- ⭐ Startseite -->
+    <main id="page-start" class="page active">
+      <div class="start-layout">
+        <div class="start-text">
+          <h2>Willkommen zur Wichtelauslosung!</h2>
+          <p>Die Wichtel bleiben geheim.</p>
+          <p>Budget: 10 Euro.</p>
+          <button class="btn" onclick="goToPage('page-choose')">Los geht's</button>
+        </div>
+
+        <div class="start-rudolf-big">
+          <img src="xrudolf-flat.png" alt="Rudolf">
+        </div>
+      </div>
+    </main>
+
+    <!-- Auswahl -->
+    <main id="page-choose" class="page">
+      <h2>Wähle deine Figur</h2>
+      <div class="grid" id="characterGrid"></div>
+      <button class="btn" onclick="goToPage('page-start')">Zurück</button>
+    </main>
+
+    <!-- Geburtsdatum -->
+    <main id="page-birth" class="page">
+      <h2>Identifikation</h2>
+      <p>Gib dein Geburtsdatum ein:</p>
+      <input type="date" id="birthInput" style="padding:0.5rem; font-size:1rem;">
+      <div id="birthError" style="color:red; margin-top:1rem;"></div>
+      <button class="btn" onclick="checkBirthday()">Bestätigen</button>
+    </main>
+
+    <!-- Ergebnis -->
+    <main id="page-result" class="page">
+      <h2>Deine Wichtelperson</h2>
+
+      <div class="result-wrapper">
+        <div class="result-box" id="resultBox">
+          <img id="recipientImage">
+          <div id="recipientName"></div>
+        </div>
+      </div>
+
+      <button class="btn" onclick="goToPage('page-start')">Neue Auswahl</button>
+    </main>
+
+  </div>
+
+<script>
+  const characters = [
+    { id:"bruno", name:"Bruno", img:"Bruno.png" },
+    { id:"friede", name:"Friede", img:"Friede.png" },
+    { id:"greta", name:"Greta", img:"Greta.png" },
+    { id:"jakob", name:"Jakob", img:"Jakob.png" },
+    { id:"joy", name:"Joy", img:"Joy.png" },
+    { id:"leif", name:"Leif", img:"Leif.png" },
+    { id:"leila", name:"Leila", img:"Leila.png" },
+    { id:"lisa", name:"Lisa", img:"Lisa.png" },
+    { id:"oli", name:"Oli", img:"Oli.png" },
+    { id:"patrick", name:"Patrick", img:"Patrick.png" },
+    { id:"tini", name:"Tini", img:"Tini.png" }
+  ];
+
+  const birthdays = {
+    "bruno":"2000-02-11",
+    "joy":"1997-07-22",
+    "lisa":"1997-07-10",
+    "tini":"1993-03-02",
+    "friede":"1996-07-08",
+    "leif":"1994-10-27",
+    "greta":"1996-07-21",
+    "jakob":"1995-04-29",
+    "oli":"1993-07-29",
+    "patrick":"1994-04-30",
+    "leila":"1994-11-28"
+  };
+
+  const assignments = {
+    "bruno":"Lisa",
+    "friede":"Patrick",
+    "greta":"Leila",
+    "jakob":"Oli",
+    "joy":"Greta",
+    "leif":"Friede",
+    "leila":"Bruno",
+    "lisa":"Jakob",
+    "oli":"Leif",
+    "patrick":"Tini",
+    "tini":"Joy"
+  };
+
+  let currentCharacter = null;
+
+  function goToPage(id){
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    window.scrollTo(0,0);
+  }
+
+  function renderCharacters(){
+    const grid = document.getElementById("characterGrid");
+    grid.innerHTML="";
+    characters.forEach(c=>{
+      const div=document.createElement("div");
+      div.className="character-card";
+      div.onclick=()=>selectCharacter(c.id);
+      div.innerHTML=`<img src="${c.img}"><div>${c.name}</div>`;
+      grid.appendChild(div);
+    });
+  }
+
+  function selectCharacter(id){
+    currentCharacter=id;
+    document.getElementById("birthError").textContent="";
+    document.getElementById("birthInput").value="";
+    goToPage("page-birth");
+  }
+
+  function checkBirthday(){
+    const d=document.getElementById("birthInput").value;
+    if(d === birthdays[currentCharacter]) showResult();
+    else document.getElementById("birthError").textContent="Falsches Geburtsdatum!";
+  }
+
+  function showResult(){
+    const recipient = assignments[currentCharacter];
+    document.getElementById("recipientName").textContent = recipient;
+    document.getElementById("recipientImage").src = recipient + ".png";
+
+    goToPage("page-result");
+
+    const box = document.getElementById("resultBox");
+    box.classList.remove("reveal");
+    void box.offsetWidth;
+    box.classList.add("reveal");
+  }
+
+  renderCharacters();
+</script>
+
+</body>
+</html>

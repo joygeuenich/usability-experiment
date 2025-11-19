@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wichtelauslosung 2025</title>
+
+<style>
+
+/* --------------------------
+    GLOBAL STYLES
+--------------------------- */
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: #eef6ff;
+  overflow-x: hidden;
+}
+
+/* Große hellblaue Schneeflocken */
+.snowflake {
+  position: fixed;
+  top: -10vh;
+  color: #a8d8ff;
+  font-size: 48px; /* 5× größer */
+  user-select: none;
+  pointer-events: none;
+  animation: fall 12s linear infinite;
+  z-index: 1;
+  opacity: 0.9;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-10vh) translateX(0); }
+  100% { transform: translateY(120vh) translateX(20vw); }
+}
+
+/* Rudolf im Hintergrund (tanzend, dampfend) */
+.rudolf-background {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  width: 380px;
+  transform: translateX(-50%);
+  opacity: 0.10;
+  animation: dance 6s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes dance {
+  0% { transform: translateX(-50%) rotate(0deg); }
+  50% { transform: translateX(-50%) rotate(4deg); }
+  100% { transform: translateX(-50%) rotate(0deg); }
+}
+
+
+/* --------------------------
+    PAGE WRAPPER
+--------------------------- */
+
+.page {
+  display: none;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 5;
+}
+
+.active {
+  display: block;
+}
+
+h1 {
+  text-align: center;
+  font-size: 48px;
+  margin-bottom: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #c0392b;
+}
+
+/* BUTTON */
+.btn {
+  background: #c0392b;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0px 6px 16px rgba(192, 57, 43, 0.25);
+}
+
+.btn:hover {
+  background: #e04b3f;
+}
+
+
+
+/* --------------------------
+    STARTSEITE
+--------------------------- */
+
+.start-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 480px;
+  margin-top: 10px;
+}
+
+.start-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  max-width: 460px;
+}
+
+.start-text h2 {
+  font-size: 32px;
+  color: #0b4120;
+  margin: 0;
+}
+
+.start-text p {
+  font-size: 20px;
+  color: #0b4120;
+}
+
+.start-rudolf img {
+  width: 420px;
+  border-radius: 25px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+
+
+/* --------------------------
+    AUSWAHLSEITE
+--------------------------- */
+
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 22px;
+}
+
+.character-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.character-card:hover {
+  transform: translateY(-5px);
+}
+
+.character-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.character-card p {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 12px;
+  color: #0b4120;
+}
+
+
+
+/* --------------------------
+    GEBURTSDATUM
+--------------------------- */
+
+.birth-box {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 500px;
+  margin: 40px auto;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.birth-box input {
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 80%;
+  margin-top: 10px;
+}
+
+
+
+/* --------------------------
+    ERGEBNISSEITE
+--------------------------- */
+
+.result-box {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 600px;
+  margin: 40px auto;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  transform: rotateY(90deg);
+  animation: reveal 0.8s ease-out forwards;
+}
+
+@keyframes reveal {
+  0% { transform: rotateY(90deg); opacity: 0; }
+  100% { transform: rotateY(0deg); opacity: 1; }
+}
+
+.result-image {
+  width: 200px;    /* mittlere Größe */
+  margin-bottom: 20px;
+}
+
+.result-name {
+  font-size: 38px;
+  font-weight: 700;
+  color: #0b4120;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- Hintergrund-Schneeflocken -->
+<script>
+for (let i = 0; i < 35; i++) {
+  let flake = document.createElement("div");
+  flake.className = "snowflake";
+  flake.style.left = Math.random() * 100 + "vw";
+  flake.style.animationDelay = Math.random() * 10 + "s";
+  flake.innerHTML = "❄";
+  document.body.appendChild(flake);
+}
+</script>
+
+<!-- Tanzender Rudolf im Hintergrund -->
+<img src="https://joygeuenich.github.io/usability-experiment/xrudolf-flat.png" class="rudolf-background">
+
+
+<!------------------------------------
+      PAGE 1 — START
+-------------------------------------->
+<div id="page-start" class="page active">
+
+<h1>WICHTELAUSLOSUNG 2025</h1>
+
+<div class="start-layout">
+
+  <div class="start-text">
+    <h2>Willkommen zur Wichtelauslosung!</h2>
+    <p>Die Wichtel bleiben geheim.</p>
+    <p>Budget: 10 Euro.</p>
+
+    <button class="btn" onclick="goToPage('page-choose')">Los geht's</button>
+  </div>
+
+  <div class="start-rudolf">
+    <img src="https://joygeuenich.github.io/usability-experiment/xrudolf-flat.png">
+  </div>
+
+</div>
+</div>
+
+
+
+<!------------------------------------
+      PAGE 2 — AUSWAHL
+-------------------------------------->
+<div id="page-choose" class="page">
+
+<h1>WICHTELAUSLOSUNG 2025</h1>
+
+<h2 style="color:#0b4120; margin-bottom:10px;">Wähle deine Figur</h2>
+<p>Klick auf dein Bild.</p>
+
+<div class="character-grid">
+
+  <div class="character-card" onclick="choosePerson('Bruno')">
+    <img src="https://joygeuenich.github.io/usability-experiment/Bruno.png">
+    <p>Bruno</p>
+  </div>
+
+  <div class="character-card" onclick="choosePerson('Friede')">
+    <img src="https://joygeuenich.github.io/usability-experiment/Friede.png">
+    <p>Friede</p>
+  </div>
+
+  <div class="character-card" onclick="choosePerson('Greta')">
+    <img src="https://joygeuenich.github.io/usability-experiment/Greta.png">
+    <p>Greta</p>
+  </div>
+
+  <div class="character-card" onclick="choosePerson('Jakob')">
+    <img src="https://joygeuenich.github.io/usability-experiment/Jakob.png">
+    <p>Jakob</p>
+  </div>
+
+  <div class="character-card" onclick="choosePerson('Joy')">
+    <img src="https://joygeuenich.github.io/usability-experiment/Joy.png">
+    <p>Joy</p>
+  </div>
+
+  <div class="character-card" onclick="choosePerson('Leif')">
+    <img src="https://joygeuenich.github.io/usability-experiment/Leif.png">
+    <p>Leif</p>
+  </div>
+
+  <div class="character-card" onclick="choosePerson('Leila')">
+    <img src="https://joygeuenich.github.io/usability-experiment/Leila.png">
+    <p>Leila</p>
+  </div>
+
+  <div class="character-card" onclick="choosePerson('Lisa')">
+    <img src="https://joygeuenich.github.io/usability-experiment/Lisa.png">
+    <p>Lisa</p>
+  </div>
+
+  <div class="character-card" onclick="choosePerson('Oli')">
+    <img src="https://joygeuenich.github.io/usability-experiment/Oli.png">
+    <p>Oli</p>
+  </div>
+
+  <div class="character-card" onclick="choosePerson('Patrick')">
+    <img src="https://joygeuenich.github.io/usability-experiment/Patrick.png">
+    <p>Patrick</p>
+  </div>
+
+  <div class="character-card" onclick="choosePerson('Tini')">
+    <img src="https://joygeuenich.github.io/usability-experiment/Tini.png">
+    <p>Tini</p>
+  </div>
+
+</div>
+</div>
+
+
+
+<!------------------------------------
+      PAGE 3 — GEBURTSTAG
+-------------------------------------->
+<div id="page-birthday" class="page">
+
+<h1>WICHTELAUSLOSUNG 2025</h1>
+
+<div class="birth-box">
+  <h2>Bitte gib dein Geburtsdatum ein</h2>
+  <p>Nur so wird dir deine geheime Wichtelperson angezeigt.</p>
+
+  <input type="date" id="birthdayInput">
+  <br><br>
+
+  <button class="btn" onclick="validateBirthday()">Weiter</button>
+</div>
+
+</div>
+
+
+
+<!------------------------------------
+      PAGE 4 — ERGEBNIS
+-------------------------------------->
+<div id="page-result" class="page">
+
+<h1>WICHTELAUSLOSUNG 2025</h1>
+
+<div class="result-box">
+  <img id="resultImage" class="result-image">
+  <div id="resultName" class="result-name"></div>
+</div>
+
+<div style="text-align:center;">
+  <button class="btn" onclick="goToPage('page-start')">Neue Auswahl</button>
+</div>
+
+</div>
+
+<script>
+
+/* Page Navigation */
+
+function goToPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+}
+
+
+/* PERSON → BIRTHDAY PAGE */
+
+let selectedPerson = null;
+
+function choosePerson(name) {
+  selectedPerson = name;
+  goToPage('page-birthday');
+}
+
+
+/* BIRTHDAY VERIFICATION */
+
+const birthdays = {
+  "Bruno": "2000-02-11",
+  "Joy": "1997-07-22",
+  "Lisa": "1997-07-10",
+  "Tini": "1993-03-02",
+  "Friede": "1996-07-08",
+  "Leif": "1994-10-27",
+  "Greta": "1996-07-21",
+  "Jakob": "1995-04-29",
+  "Oli": "1993-07-29",
+  "Patrick": "1994-04-30",
+  "Leila": "1994-11-28"
+};
+
+
+/* MATCHING (WICHTEL-ZUORDNUNG) */
+
+const assignments = {
+  "Bruno": "Lisa",
+  "Friede": "Patrick",
+  "Greta": "Oli",
+  "Jakob": "Greta",
+  "Joy": "Bruno",
+  "Leif": "Leila",
+  "Leila": "Jakob",
+  "Lisa": "Tini",
+  "Oli": "Friede",
+  "Patrick": "Joy",
+  "Tini": "Bruno"
+};
+
+function validateBirthday() {
+  const entered = document.getElementById('birthdayInput').value;
+
+  if (entered === birthdays[selectedPerson]) {
+    showResult();
+  } else {
+    alert("Das Geburtsdatum stimmt nicht!");
+  }
+}
+
+
+/* SHOW RESULT */
+
+function showResult() {
+  const target = assignments[selectedPerson];
+  const imgUrl = `https://joygeuenich.github.io/usability-experiment/${target}.png`;
+
+  document.getElementById("resultImage").src = imgUrl;
+  document.getElementById("resultName").textContent = target;
+
+  goToPage("page-result");
+}
+
+</script>
+
+</body>
+</html>

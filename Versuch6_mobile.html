@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<title>Wichtelauslosung 2025</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<style>
+    :root {
+      --bg: #f4f7fb;
+      --card-bg: #ffffff;
+      --red: #c4372b;
+      --green: #064428;
+      --accent: #ffe3df;
+      --shadow-soft: 0 12px 35px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Moon Flower – Schriftdatei im Ordner */
+    @font-face {
+      font-family: "Moon Flower";
+      src: url("MoonFlower.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      background: radial-gradient(circle at top, #e7f0ff 0, #f4f7fb 55%, #f4f7fb 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--green);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* animierte Schneeflocken */
+    to   { background-position: 0 600px, 0 700px; }
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1000px;
+      background: var(--card-bg);
+      border-radius: 28px;
+      box-shadow: var(--shadow-soft);
+      padding: 2.2rem 2.6rem 2.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    header h1 {
+      font-family: "Moon Flower", system-ui, sans-serif;
+      font-size: 3.2rem;
+      letter-spacing: 0.12em;
+      color: var(--red);
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -0.6rem;
+      width: 75%;
+      height: 2px;
+      background: var(--green);
+      opacity: 0.4;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.45s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Start */
+    .start-layout {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.6fr);
+      gap: 2.8rem;
+      align-items: center;
+    }
+
+    .start-text h2 {
+      font-family: "Moon Flower", system-ui, sans-serif;
+      font-size: 2.4rem;
+      margin-bottom: 0.8rem;
+      color: var(--green);
+    }
+
+    .start-text p {
+      margin-bottom: 0.6rem;
+      font-size: 1.05rem;
+      color: #1f2933;
+    }
+
+    .budget {
+      font-weight: 600;
+      margin-top: 0.2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.8rem 1.6rem;
+      border-radius: 999px;
+      border: none;
+      background: var(--red);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1.4rem;
+      transition: all 0.15s ease;
+      box-shadow: 0 6px 18px rgba(196, 55, 43, 0.45);
+    }
+
+    .btn:hover {
+      background: #d14738;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(196, 55, 43, 0.55);
+    }
+
+    /* Rudolf */
+    .rudolph-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .rudolph-card {
+      background: #ffffffcc;
+      backdrop-filter: blur(6px);
+      border-radius: 22px;
+      padding: 1.2rem 1.4rem 1.4rem;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.18);
+      max-width: 280px;
+    }
+
+    .rudolph-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Auswahlseite */
+    .info-text {
+      margin: 2rem 0 0.8rem;
+      font-size: 1rem;
+      color: #334155;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1rem;
+      margin-top: 0.7rem;
+    }
+
+    .character-card {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 0.9rem 0.8rem;
+      border: 2px solid transparent;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.12s ease;
+    }
+
+    .character-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
+      border-color: #cbd5f5;
+      background: #ffffff;
+    }
+
+    .character-card img {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #e5ecff;
+      margin-bottom: 0.5rem;
+    }
+
+    .character-name {
+      font-weight: 600;
+      margin-bottom: 0.15rem;
+      color: #0f172a;
+    }
+
+    .result-box {
+      margin-top: 2rem;
+      text-align: center;
+      padding: 1.6rem 1rem;
+      background: #f8fafc;
+      border-radius: 18px;
+      border: 1px solid #d1e0ff;
+      box-shadow: 0 10px 24px rgba(148, 163, 184, 0.32);
+    }
+
+    .result-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--red);
+      margin-bottom: 0.35rem;
+    }
+
+    @media (max-width: 800px) {
+      .start-layout {
+        grid-template-columns: 1fr;
+      }
+      .rudolph-card {
+        max-width: 240px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+<header>
+<h1>WICHTELAUSLOSUNG 2025</h1>
+</header>
+<!-- STARTSEITE -->
+<main class="page active" id="page-start">
+<div class="start-layout">
+<section class="start-text">
+<h2>Willkommen zur Wichtelauslosung!</h2>
+<p>Die Wichtel bleiben geheim!</p>
+<p class="budget">Geschenk-Budget: 10 Euro.</p>
+<button class="btn" onclick="goToPage('page-choose')">
+            Los geht's
+          </button>
+</section>
+<section class="rudolph-wrapper">
+
+<div class="rudolph-card">
+<img alt="Rudolf das Rentier" src="rudolf-flat.png"/>
+</div>
+</section>
+</div>
+</main>
+<!-- FIGUR-AUSWAHL -->
+<main class="page" id="page-choose">
+<h2 style="font-family: 'Moon Flower'; font-size: 2rem; margin-top: 2rem;">Wähle deine Figur</h2>
+<p class="info-text">
+        Klick auf deine Figur. Danach erfährst du, wen du beim Wichteln beschenkst.
+      </p>
+<div class="grid" id="characterGrid"></div>
+<button class="btn" onclick="goToPage('page-start')" style="margin-top: 1.5rem;">
+        Zurück zur Startseite
+      </button>
+</main>
+<!-- ERGEBNIS -->
+<main class="page" id="page-result">
+<h2 style="font-family: 'Moon Flower'; font-size: 2rem; text-align: center; margin-top: 2rem;">
+        Deine Wichtelperson
+      </h2>
+<div class="result-box">
+<div id="chosenCharacterLabel" style="margin-bottom: 0.5rem;"></div>
+<div class="result-name" id="recipientName">Max Mustermann</div>
+</div>
+<button class="btn" onclick="goToPage('page-start')" style="margin-top: 1.5rem;">
+        Neue Auswahl
+      </button>
+</main>
+</div>
+<script>
+    const characters = [
+      { id: "char1", name: "Weihnachtsmann", img: "char1.png" },
+      { id: "char2", name: "Frau Weihnachtsmann", img: "char2.png" },
+      { id: "char3", name: "Rudolf", img: "char3.png" },
+      { id: "char4", name: "Schneemann", img: "char4.png" },
+      { id: "char5", name: "Engel", img: "char5.png" },
+      { id: "char6", name: "Wichtel", img: "char6.png" },
+      { id: "char7", name: "Lebkuchenfigur", img: "char7.png" },
+      { id: "char8", name: "Nussknacker", img: "char8.png" },
+      { id: "char9", name: "Rentier", img: "char9.png" },
+      { id: "char10", name: "Sternenfee", img: "char10.png" }
+    ];
+
+    const assignments = {
+      "char1": "Person A",
+      "char2": "Person B",
+      "char3": "Person C",
+      "char4": "Person D",
+      "char5": "Person E",
+      "char6": "Person F",
+      "char7": "Person G",
+      "char8": "Person H",
+      "char9": "Person I",
+      "char10": "Person J"
+    };
+
+    function goToPage(pageId) {
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      document.getElementById(pageId).classList.add("active");
+      window.scrollTo(0, 0);
+    }
+
+    function renderCharacters() {
+      const grid = document.getElementById("characterGrid");
+      grid.innerHTML = "";
+      characters.forEach(c => {
+        const card = document.createElement("div");
+        card.className = "character-card";
+        card.onclick = () => selectCharacter(c.id);
+
+        const img = document.createElement("img");
+        img.src = c.img;
+        img.alt = c.name;
+
+        const name = document.createElement("div");
+        name.className = "character-name";
+        name.textContent = c.name;
+
+        card.appendChild(img);
+        card.appendChild(name);
+
+        grid.appendChild(card);
+      });
+    }
+
+    function selectCharacter(id) {
+      const chosen = characters.find(c => c.id === id);
+      document.getElementById("chosenCharacterLabel").textContent =
+        "Du bist: " + chosen.name;
+      document.getElementById("recipientName").textContent =
+        assignments[id] || "Unbekannt";
+
+      goToPage("page-result");
+    }
+
+    renderCharacters();
+  </script>
+</body>
+</html>
